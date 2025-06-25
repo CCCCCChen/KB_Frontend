@@ -5,7 +5,7 @@ import {
   PencilSquareIcon,
 } from '@heroicons/react/24/solid'
 import AppIcon from '@/app/components/base/app-icon'
-import { useSession, signIn } from 'next-auth/react' // 添加CAS登录功能
+import { useSession, signIn, signOut } from 'next-auth/react' // 添加CAS登录功能
 export type IHeaderProps = {
   title: string
   isMobile?: boolean
@@ -37,10 +37,20 @@ const Header: FC<IHeaderProps> = ({
         <div className=" text-sm text-gray-800 font-bold">{title}</div>
       </div>
       <div className="flex items-center space-x-2">
-        {!session && (
+        {session ? (
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600">欢迎, {session.user?.name}</span>
+            <button
+              onClick={() => signOut({ callbackUrl: '/login' })}
+              className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
+            >
+              退出登录
+            </button>
+          </div>
+        ) : (
           <button
             onClick={() => signIn()}
-            className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm"
+            className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
           >
             CAS登录
           </button>

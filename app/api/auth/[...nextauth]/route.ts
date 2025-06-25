@@ -1,5 +1,4 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
-import { NextResponse } from 'next/server'
 import CredentialsProvider from "next-auth/providers/credentials"
 
 export const authOptions: NextAuthOptions = {
@@ -15,16 +14,16 @@ export const authOptions: NextAuthOptions = {
                 if (process.env.NODE_ENV === 'development') {
                     return { id: credentials?.username || '1', name: credentials?.username || 'user' }
                 }
-                
+
                 // 生产环境也允许CAS用户登录
                 if (credentials?.username) {
-                    return { 
-                        id: credentials.username, 
+                    return {
+                        id: credentials.username,
                         name: credentials.username,
                         email: `${credentials.username}@example.com`
                     }
                 }
-                
+
                 return null
             }
         })
